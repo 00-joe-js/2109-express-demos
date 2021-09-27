@@ -62,7 +62,8 @@ app.get("/select/:flavor", (req, res) => {
     const favoriteFlavor = req.params.flavor;
 
     if (!flavors.includes(favoriteFlavor)) {
-        res.send("");
+        res.send("Unknown flavor");
+        return;
     }
 
     fs.appendFile(__dirname + "/votes.txt", req.params.flavor + "\n", () => {
@@ -73,7 +74,13 @@ app.get("/select/:flavor", (req, res) => {
 
 });
 
+const fsPromises = require("fs").promises; 
 // Voting results route.
-app.get("/voting-results", (req, res) => {
-    res.send("To be implemented. :)");
+app.get("/voting-results", async (req, res, next) => {
+    try {
+        const contentsOfVotingFile = await fsPromises.readFile(__dirname + "/votes.txt", "utf-8");
+        res.send(contentsOfVotingFile);
+    } catch (err) {
+        next(err);
+    }
 });
