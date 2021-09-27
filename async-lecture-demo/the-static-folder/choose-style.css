@@ -1,0 +1,15 @@
+* {
+    box-sizing: border-box;
+}
+
+html,body {
+    font-size: 30px;
+}
+
+img {
+    width: 400px;
+}
+
+#flavor-selection > div {
+    margin-bottom: 20px;
+}
