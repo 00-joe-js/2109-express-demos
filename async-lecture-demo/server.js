@@ -74,10 +74,17 @@ app.get("/select/:flavor", (req, res) => {
 
 });
 
+const delay = (ms) => {
+    return new Promise((resolve) => {
+        setTimeout(resolve, ms);
+    });
+};
+
 const fsPromises = require("fs").promises; 
 // Voting results route.
 app.get("/voting-results", async (req, res, next) => {
     try {
+        await delay(10000);
         const contentsOfVotingFile = await fsPromises.readFile(__dirname + "/votes.txt", "utf-8");
         res.send(contentsOfVotingFile);
     } catch (err) {
