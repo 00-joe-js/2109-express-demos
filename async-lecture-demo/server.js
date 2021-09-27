@@ -1,12 +1,14 @@
 const express = require("express");
 const session = require("express-session");
-const app = express();
+const fs = require("fs");
 
+const app = express();
 app.listen(8080, () => {
     console.log("Server is on!");
 });
 
 // Session middleware, this is how I remember your client.
+// This is not covered material so don't fret~ :)
 app.set('trust proxy', 1);
 app.use(
     session({
@@ -17,10 +19,14 @@ app.use(
     })
 );
 
+// Any URL like `/starburst.jpg` will be picked up by this middleware,
+// seen to be a matching file name in "the-static-folder" folder
+// and responded to with the content of the correct file.
 app.use(express.static(__dirname + "/the-static-folder"));
 
 const flavors = ["red", "orange", "yellow", "pink"];
 
+// The homepage route.
 app.get("/", (req, res) => {
     res.send(
         `
@@ -44,11 +50,7 @@ app.get("/", (req, res) => {
     );
 });
 
-app.get("/voting-results", (req, res) => {
-    res.send("To be implemented. :)");
-});
-
-const fs = require("fs");
+// The voting route.
 app.get("/select/:flavor", (req, res) => {
 
     if (req.session.voted === true) {
@@ -69,4 +71,9 @@ app.get("/select/:flavor", (req, res) => {
         req.session.save();
     });
 
+});
+
+// Voting results route.
+app.get("/voting-results", (req, res) => {
+    res.send("To be implemented. :)");
 });
