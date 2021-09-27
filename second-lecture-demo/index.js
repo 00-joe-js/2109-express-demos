@@ -21,9 +21,8 @@ const morgan = require("morgan");
 app.use(morgan("dev"));
 
 // middleware #3
-app.use(
-    express.static(__dirname + "/public")
-);
+const staticMiddleware = express.static(__dirname + "/public");
+app.use(staticMiddleware);
 
 // middleware #4
 app.use((req, res, next) => {
@@ -96,4 +95,8 @@ app.get("/characters/:startingLetter", (req, res) => {
             </body>
         </html>
     `);
+});
+
+app.get('/pairs', (req, res) => {
+    res.sendFile(__dirname + "/pairs.txt");
 });
